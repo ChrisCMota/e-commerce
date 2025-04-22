@@ -1,4 +1,4 @@
-create database ecommerce;
+-- create database ecommerce;
 
 create table categories(
     id_category int not null auto_increment primary key,

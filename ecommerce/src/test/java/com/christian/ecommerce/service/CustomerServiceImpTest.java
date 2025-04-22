@@ -1,0 +1,92 @@
+package com.christian.ecommerce.service;
+
+import com.christian.ecommerce.dao.CustomerDAO;
+import com.christian.ecommerce.model.Customer;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
+class CustomerServiceImpTest {
+
+    @Mock
+    private CustomerDAO customerDAO;
+
+    @InjectMocks
+    private ICustomerService service = new CustomerServiceImp(customerDAO);
+
+    private List<Customer> list = new ArrayList<>();
+
+    @BeforeEach
+    void init(){
+        var customer1 = new Customer(1, "Test1", "newcustomer1@email.com", "12345691", "street 1", "D01JH91", "Ireland1", "Dublin1");
+        var customer2 = new Customer(2, "Test2", "newcustomer2@email.com", "12345692", "street 2", "D01JH92", "Ireland2", "Dublin2");
+        var customer3 = new Customer(3, "Test3", "newcustomer3@email.com", "12345693", "street 3", "D01JH93", "Ireland3", "Dublin3");
+        list.addAll(List.of(customer1,customer2,customer3));
+    }
+
+    @Test
+    void shouldCreateNewCustomer(){
+        Customer newCustomer = new Customer(4, "Test4", "newcustomer4@email.com", "12345694", "street 4", "D01JH94", "Ireland4", "Dublin4");
+
+
+        BDDMockito.given(customerDAO.save(newCustomer)).willReturn(newCustomer);
+
+        Customer createdCustomer = service.createNewCustomer(newCustomer);
+
+        Assertions.assertThat(createdCustomer.getName()).isEqualTo(newCustomer.getName());
+        Assertions.assertThat(createdCustomer.getEmail()).isEqualTo(newCustomer.getEmail());
+
+        BDDMockito.then(customerDAO).should().save(newCustomer);
+    }
+
+    @Test
+    void shouldUpdateCustomer(){
+        Customer updatedCustomer = new Customer(4, "Test4", "newcustomer4@email.com", "12345694", "street 4", "D01JH94", "Ireland4", "Dublin4");
+
+        BDDMockito.given(customerDAO.save(updatedCustomer)).willReturn(updatedCustomer);
+
+        Customer updtCustomer = service.updateCustomer(updatedCustomer);
+
+        Assertions.assertThat(updtCustomer.getName()).isEqualTo(updatedCustomer.getName());
+        Assertions.assertThat(updtCustomer.getEmail()).isEqualTo(updatedCustomer.getEmail());
+
+        BDDMockito.then(customerDAO).should().save(updatedCustomer);
+    }
+
+    @Test
+    void shouldReturnAllCustomers(){
+        BDDMockito.given(customerDAO.findAll()).willReturn(list);
+
+        var customers = service.findAll();
+
+        Assertions.assertThat(customers).containsAll(list);
+
+        BDDMockito.then(customerDAO).should().findAll();
+    }
+
+    @Test
+    void shouldReturnCustomerByPhoneNumber(){
+        var customer = list.get(0);
+
+        BDDMockito.given(customerDAO.findByPhoneNumber(customer.getPhoneNumber())).willReturn(customer);
+
+        var result = service.getCustomerByPhoneNumber(customer.getPhoneNumber());
+
+        Assertions.assertThat(result.getName()).isEqualTo(customer.getName());
+        Assertions.assertThat(result.getEmail()).isEqualTo(customer.getEmail());
+
+        BDDMockito.then(customerDAO).should().findByPhoneNumber(customer.getPhoneNumber());
+
+    }
+    
+
+}
