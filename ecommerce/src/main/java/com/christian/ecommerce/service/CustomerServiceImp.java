@@ -5,6 +5,7 @@ import com.christian.ecommerce.dto.CustomerDTO;
 import com.christian.ecommerce.exceptions.CustomersException;
 import com.christian.ecommerce.mapper.CustomerMapper;
 import com.christian.ecommerce.model.Customer;
+import com.christian.ecommerce.validators.CustomerDTOValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CustomerServiceImp implements ICustomerService{
 
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO newCustomer) {
-
+        CustomerDTOValidator.validator(newCustomer);
         Customer customer = mapper.customerDtotoCustomer(newCustomer);
 
         CustomerDTO savedCustomerDTO = mapper.customerToCustomerDto(customerDAO.save(customer));
@@ -42,7 +43,7 @@ public class CustomerServiceImp implements ICustomerService{
 
         CustomerDTO saved = mapper.customerToCustomerDto(customerDAO.save(customer));
 
-        if (saved != null){
+        if (saved != null && customerDTO != null){
             return saved;
         }
 

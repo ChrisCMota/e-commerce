@@ -2,6 +2,7 @@ package com.christian.ecommerce.service;
 
 import com.christian.ecommerce.dao.CustomerDAO;
 import com.christian.ecommerce.dto.CustomerDTO;
+import com.christian.ecommerce.exceptions.CustomersException;
 import com.christian.ecommerce.mapper.CustomerMapper;
 import com.christian.ecommerce.mapper.CustomerMapperImpl;
 import com.christian.ecommerce.model.Customer;
@@ -24,7 +25,6 @@ class CustomerServiceImpTest {
 
     @Mock
     private CustomerDAO customerDAO;
-
 
     private CustomerMapper mapper = new CustomerMapperImpl();
 
@@ -57,6 +57,17 @@ class CustomerServiceImpTest {
         Assertions.assertThat(createdCustomer.getEmail()).isEqualTo(newCustomer.getEmail());
 
         BDDMockito.then(customerDAO).should().save(any(Customer.class));
+    }
+
+    @Test
+    void shouldThrowsCustomerExceptionOnCreateNewCustomer(){
+
+        CustomerDTO newCustomer = new CustomerDTO ("", "newcustomer4@email.com", "12345694", "street 4", "D01JH94", "Ireland4", "Dublin4");
+
+        Assertions.assertThatThrownBy(() -> service.createNewCustomer(newCustomer))
+                .isInstanceOf(CustomersException.class)
+                .hasMessage("Invalid CustomerDTO");
+
     }
 
     @Test
