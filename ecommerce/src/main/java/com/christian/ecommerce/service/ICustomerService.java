@@ -1,14 +1,14 @@
 package com.christian.ecommerce.service;
 
-import com.christian.ecommerce.model.Customer;
+import com.christian.ecommerce.dto.CustomerDTO;
 
 import java.util.List;
 
 public interface ICustomerService {
 
-    Customer createNewCustomer(Customer newCustomer);
-    Customer updateCustomer(Customer customer);
-    Customer getCustomerById(Integer id);
-    Customer getCustomerByPhoneNumber(String phoneNumber);
-    List<Customer> findAll();
+    CustomerDTO createNewCustomer(CustomerDTO newCustomer);
+    CustomerDTO updateCustomer(CustomerDTO customer);
+    CustomerDTO getCustomerById(Integer id);
+    CustomerDTO getCustomerByPhoneNumber(String phoneNumber);
+    List<CustomerDTO> findAll();
 }

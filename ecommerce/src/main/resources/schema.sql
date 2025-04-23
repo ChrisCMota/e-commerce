@@ -39,7 +39,7 @@ create table customers(
     email_customer varchar(100) not null unique,
     phone_number varchar(20),
     address_customer varchar(255) not null,
-    aircode_customer varchar(10),
+    eircode_customer varchar(10),
     country varchar(50),
     city varchar(50)
 );
