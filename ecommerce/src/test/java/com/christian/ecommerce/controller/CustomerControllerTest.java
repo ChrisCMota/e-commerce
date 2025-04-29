@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @WebMvcTest(controllers = CustomerController.class)
 @ComponentScan(basePackages = {"com.christian"})
 class CustomerControllerTest {
@@ -42,8 +44,8 @@ class CustomerControllerTest {
     @BeforeEach
     void init(){
         var customer1 = new Customer(1,"Test1", "newcustomer1@email.com", "12345691", "street 1", "D01JH91", "Ireland1", "Dublin1");
-        var customer3 = new Customer(3,"Test3", "newcustomer3@email.com", "12345693", "street 3", "D01JH93", "Ireland3", "Dublin3");
         var customer2 = new Customer(2,"Test2", "newcustomer2@email.com", "12345692", "street 2", "D01JH92", "Ireland2", "Dublin2");
+        var customer3 = new Customer(3,"Test3", "newcustomer3@email.com", "12345693", "street 3", "D01JH93", "Ireland3", "Dublin3");
         list.addAll(List.of(customer1,customer2,customer3));
     }
 
@@ -102,6 +104,44 @@ class CustomerControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    void shouldReturnCustomerByPhoneNumber() throws Exception {
+        CustomerDTO customerByPhoneNumber = mapper.customerToCustomerDto(list.get(1));
+        String phoneNumber = "12345692";
+
+        BDDMockito.given(repository.findByPhoneNumber(phoneNumber)).willReturn(list.stream()
+                .filter(customer -> customer.getPhoneNumber().equals(phoneNumber))
+                .findFirst()
+                .get());
+
+        mvc.perform(MockMvcRequestBuilders.get("/customers/search")
+                        .param("phoneNumber", phoneNumber)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(customerByPhoneNumber)));
+
+    }
+
+    @Test
+    void shouldUpdateCustomer() throws Exception {
+        Customer customer = list.get(0);
+        CustomerDTO customerDTO = mapper.customerToCustomerDto(customer);
+        customerDTO.setName("Test");
+        String customerJson = objectMapper.writeValueAsString(customerDTO);
+
+        BDDMockito.given(repository.findByEmail(customer.getEmail())).willReturn(customer);
+        BDDMockito.given(repository.save(any(Customer.class))).willReturn(mapper.customerDtotoCustomer(customerDTO));
+
+        mvc.perform(MockMvcRequestBuilders.put("/customers")
+                        .content(customerJson)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(customerJson));
+
     }
 
 }

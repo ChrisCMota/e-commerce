@@ -59,11 +59,11 @@ public class CustomerController {
             return ResponseEntity.ok(customerByPhoneNumber);
     }
 
-    @PutMapping("customers/{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@RequestBody @Valid CustomerDTO customer, @PathVariable Integer id){
-        log.info("INFO: updateCustomer() Requested by id: '{}'", id);
+    @PutMapping("customers")
+    public ResponseEntity<CustomerDTO> updateCustomer(@RequestBody @Valid CustomerDTO customer){
+        log.info("INFO: updateCustomer() Requested by: '{}'", customer.getEmail());
 
-            CustomerDTO customerById = customerService.getCustomerById(id);
+            CustomerDTO customerByEmail = customerService.getCustomerByEmail(customer.getEmail());
 
             return ResponseEntity.ok(customerService.updateCustomer(customer));
     }

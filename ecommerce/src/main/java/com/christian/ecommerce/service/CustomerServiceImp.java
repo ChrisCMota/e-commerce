@@ -38,13 +38,14 @@ public class CustomerServiceImp implements ICustomerService{
 
     @Override
     public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
+        Customer byEmail = customerDAO.findByEmail(customerDTO.getEmail());
 
         Customer customer = mapper.customerDtotoCustomer(customerDTO);
+        customer.setId(byEmail.getId());
 
-        CustomerDTO saved = mapper.customerToCustomerDto(customerDAO.save(customer));
-
-        if (saved != null && customerDTO != null){
-            return saved;
+        if (byEmail != null){
+            Customer saved = customerDAO.save(customer);
+            return mapper.customerToCustomerDto(saved);
         }
 
         throw new CustomersException("[ERROR]: Could not update customer");
@@ -82,5 +83,10 @@ public class CustomerServiceImp implements ICustomerService{
         }
 
         throw new CustomersException("[ERROR]: Could not retrieve customers");
+    }
+
+    @Override
+    public CustomerDTO getCustomerByEmail(String email) {
+       return mapper.customerToCustomerDto(customerDAO.findByEmail(email));
     }
 }

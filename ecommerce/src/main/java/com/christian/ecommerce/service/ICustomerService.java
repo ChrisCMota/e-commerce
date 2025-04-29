@@ -11,4 +11,5 @@ public interface ICustomerService {
     CustomerDTO getCustomerById(Integer id);
     CustomerDTO getCustomerByPhoneNumber(String phoneNumber);
     List<CustomerDTO> findAll();
+    CustomerDTO getCustomerByEmail(String email);
 }

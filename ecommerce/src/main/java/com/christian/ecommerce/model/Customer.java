@@ -3,13 +3,14 @@ package com.christian.ecommerce.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "customers")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @ToString
 public class Customer {
 
@@ -30,7 +31,7 @@ public class Customer {
     @Column(name = "address_customer", nullable = false)
     private String address;
 
-    @Column(name = "eircode_customer", nullable = false, unique = true, length = 10)
+    @Column(name = "eircode_customer", nullable = false, length = 10)
     private String eircode;
 
     @Column(name = "country", length = 50)
@@ -39,4 +40,16 @@ public class Customer {
     @Column(name = "city", length = 50)
     private String city;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(id, customer.id) && Objects.equals(email, customer.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email);
+    }
 }
