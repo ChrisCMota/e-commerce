@@ -26,6 +26,7 @@ public class CustomerServiceImp implements ICustomerService{
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO newCustomer) {
         CustomerDTOValidator.validator(newCustomer);
+
         Customer customer = mapper.customerDtotoCustomer(newCustomer);
 
         CustomerDTO savedCustomerDTO = mapper.customerToCustomerDto(customerDAO.save(customer));

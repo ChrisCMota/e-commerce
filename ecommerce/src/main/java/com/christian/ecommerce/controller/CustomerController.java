@@ -34,11 +34,7 @@ public class CustomerController {
 
         CustomerDTO customerById = customerService.getCustomerById(id);
 
-        if (customerById != null) {
-            return ResponseEntity.ok(customerById);
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(customerById);
     }
 
     @PostMapping("customers")

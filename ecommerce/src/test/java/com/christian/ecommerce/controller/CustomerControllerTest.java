@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
@@ -143,5 +144,31 @@ class CustomerControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(customerJson));
 
     }
+
+    @Test
+    void shouldInsertNewCustomer() throws Exception {
+        CustomerDTO newCustomer = new CustomerDTO("Test3", "newcustomer3@email.com", "12345693", "street 3", "D01JH93", "Ireland3", "Dublin3");
+        Customer customer = mapper.customerDtotoCustomer(newCustomer);
+
+        BDDMockito.given(repository.save(mapper.customerDtotoCustomer(newCustomer))).willReturn(customer);
+
+        mvc.perform(MockMvcRequestBuilders.post("/customers")
+                .content(objectMapper.writeValueAsString(newCustomer))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(newCustomer)));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenGetCustomerById() throws Exception{
+        BDDMockito.given(repository.findById(1)).willReturn(Optional.empty());
+
+        mvc.perform(MockMvcRequestBuilders.get("/customers/{id}", 1))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(400))
+                .andExpect(MockMvcResultMatchers.content().json("{\"status\":400,\"message\":\"[ERROR]: Could not retrieve customer by id\"}"));
+    }
+
 
 }

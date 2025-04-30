@@ -75,6 +75,7 @@ class CustomerServiceImpTest {
         Customer updatedCustomer = new Customer(4,"Test4", "newcustomer4@email.com", "12345694", "street 4", "D01JH94", "Ireland4", "Dublin4");
         CustomerDTO customerDTO = mapper.customerToCustomerDto(updatedCustomer);
 
+        BDDMockito.given(customerDAO.findByEmail(updatedCustomer.getEmail())).willReturn(updatedCustomer);
         BDDMockito.given(customerDAO.save(any(Customer.class))).willReturn(updatedCustomer);
 
         CustomerDTO updtCustomer = service.updateCustomer(customerDTO);
