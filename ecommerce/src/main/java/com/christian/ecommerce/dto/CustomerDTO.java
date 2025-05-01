@@ -25,7 +25,7 @@ public class CustomerDTO {
     @NotBlank(message = "Invalid address")
     private String address;
 
-    @NotBlank(message = "Invalid Aircode")
+    @NotBlank(message = "Invalid Eircode")
     @Size(max = 10)
     private String eircode;
 
