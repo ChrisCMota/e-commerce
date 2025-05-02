@@ -7,6 +7,7 @@ import com.christian.ecommerce.mapper.CategoryMapper;
 import com.christian.ecommerce.model.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CategoryServiceImp implements ICategoryService{
 
@@ -36,7 +37,12 @@ public class CategoryServiceImp implements ICategoryService{
         if (categoryDTO != null){
             Category category = mapper.dtoToCategory(categoryDTO);
 
-            return mapper.categoryToDto(repository.save(category));
+           Category byId = repository.findById(categoryDTO.getId())
+                    .orElseThrow(() -> new CategoryException("[ERROR]: Category not found"));
+
+           byId.setName(categoryDTO.getName());
+
+           return mapper.categoryToDto(repository.save(byId));
         }
 
         throw new CategoryException("[ERROR]: Could not update null category(null)");
@@ -49,8 +55,14 @@ public class CategoryServiceImp implements ICategoryService{
 
     @Override
     public void deleteCategory(Integer id) {
-        if (id < 0){
-            throw new CategoryException("[ERRO]: ID cannot be less than 0");
+        if (id < 0 ){
+            throw new CategoryException("[ERROR]: ID cannot be less than 0");
+        }
+
+        Optional<Category> byId = repository.findById(id);
+
+        if (byId.isEmpty()){
+            throw new CategoryException("[ERROR]: Category not found");
         }
 
         repository.deleteById(id);

@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImpTest {
@@ -45,7 +46,7 @@ class CategoryServiceImpTest {
 
     @Test
     void shouldCreateNewCategory(){
-        Category category = new Category(4, "Home");
+        Category category = new Category(4, "");
         CategoryDTO newCategoryDTo = mapper.categoryToDto(category);
         CategoryDTO wrongCategory = new CategoryDTO(4, "Wrong");
 
@@ -69,10 +70,30 @@ class CategoryServiceImpTest {
                 .hasMessage("[ERROR]: Could not create category(null)");
     }
 
+    @Test
+    void shouldUpdateCategory(){
+        Category category = new Category(1, "Game");
+        CategoryDTO categoryDTO = mapper.categoryToDto(category);
+
+        Category updated = new Category(1, "Game online");
+        CategoryDTO updatedDTO = mapper.categoryToDto(updated);
+
+        BDDMockito.given(repository.findById(updated.getId())).willReturn(Optional.of(category));
+        BDDMockito.given(repository.save(updated)).willReturn(updated);
+
+        CategoryDTO result = service.update(updatedDTO);
+
+        Assertions.assertThat(result).isEqualTo(updatedDTO);
+        Assertions.assertThat(result).isNotNull();
+        Assertions.assertThat(result.getName()).isNotEqualTo(categoryDTO.getName());
+
+        BDDMockito.then(repository).should().save(updated);
+    }
 
 
 
 
+    //TODO: Change repository MOCK to FAKE repository
 
 
 
