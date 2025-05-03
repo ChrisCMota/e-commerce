@@ -6,62 +6,34 @@ import com.christian.ecommerce.exceptions.CategoryException;
 import com.christian.ecommerce.mapper.CategoryMapper;
 import com.christian.ecommerce.mapper.CategoryMapperImpl;
 import com.christian.ecommerce.model.Category;
+import com.christian.ecommerce.repository.FakeCategoryRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-@ExtendWith(MockitoExtension.class)
 class CategoryServiceImpTest {
 
-    @Mock
-    private CategoryDAO repository;
+
+    private CategoryDAO repository = new FakeCategoryRepository();
 
     private CategoryMapper mapper = new CategoryMapperImpl();
 
-    @InjectMocks
     private CategoryServiceImp service = new CategoryServiceImp(repository, mapper);
 
-    private List<Category> categories = new ArrayList<>();
-    private List<CategoryDTO> categoriesDTO = new ArrayList<>();
-
-    @BeforeEach
-    void init(){
-        Category category1 = new Category(1, "Game");
-        Category category2 = new Category(2, "Kitchen");
-        Category category3 = new Category(3, "Technology");
-
-        categories.addAll(List.of(category1, category2, category3));
-
-        categoriesDTO = mapper.listCategoryToDto(categories);
-    }
 
     @Test
     void shouldCreateNewCategory(){
-        Category category = new Category(4, "");
+        Category category = new Category(4, "Game Online");
         CategoryDTO newCategoryDTo = mapper.categoryToDto(category);
-        CategoryDTO wrongCategory = new CategoryDTO(4, "Wrong");
-
-        BDDMockito.given(repository.save(category)).willReturn(category);
 
         CategoryDTO returnedCategory = service.createNew(newCategoryDTo);
 
         Assertions.assertThat(returnedCategory).isEqualTo(newCategoryDTo);
-        Assertions.assertThat(returnedCategory).isNotEqualTo(wrongCategory);
-
-        BDDMockito.then(repository).should().save(category);
+        Assertions.assertThat(returnedCategory).isNotNull();
+        Assertions.assertThat(repository.findAllByOrderByNameAsc()).contains(category);
     }
 
     @Test
-    void shouldThrowNullCategoryException(){
+    void shouldThrowNullCategoryExceptionWhenCreateNewCategory(){
         Category category = null;
         CategoryDTO categoryDTO = null;
 
@@ -71,29 +43,40 @@ class CategoryServiceImpTest {
     }
 
     @Test
+    void shouldThrowCategoryAlreadyExistsWhenCreateNewCategory(){
+        Category categoryExistent = new Category(1, "Game");
+        CategoryDTO categoryExistentDTO = mapper.categoryToDto(categoryExistent);
+
+        Assertions.assertThatThrownBy(() -> service.createNew(categoryExistentDTO))
+                .isInstanceOf(CategoryException.class)
+                .hasMessage("[ERROR]: This category already exists");
+    }
+
+    @Test
     void shouldUpdateCategory(){
-        Category category = new Category(1, "Game");
-        CategoryDTO categoryDTO = mapper.categoryToDto(category);
-
-        Category updated = new Category(1, "Game online");
+        Category updated = new Category(1, "Make-up");
         CategoryDTO updatedDTO = mapper.categoryToDto(updated);
-
-        BDDMockito.given(repository.findById(updated.getId())).willReturn(Optional.of(category));
-        BDDMockito.given(repository.save(updated)).willReturn(updated);
 
         CategoryDTO result = service.update(updatedDTO);
 
         Assertions.assertThat(result).isEqualTo(updatedDTO);
         Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.getName()).isNotEqualTo(categoryDTO.getName());
+        Assertions.assertThat(repository.findAllByOrderByNameAsc()).contains(updated);
+    }
 
-        BDDMockito.then(repository).should().save(updated);
+    @Test
+    void shouldThrowNullUpdateCategory(){
+        CategoryDTO nullCategoryDTO = null;
+
+        Assertions.assertThatThrownBy(() -> service.update(nullCategoryDTO))
+                .isInstanceOf(CategoryException.class)
+                .hasMessage("[ERROR]: Could not update null category(null)");
     }
 
 
 
 
-    //TODO: Change repository MOCK to FAKE repository
+
 
 
 

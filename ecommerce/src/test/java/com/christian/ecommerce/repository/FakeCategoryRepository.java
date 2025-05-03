@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class FakeRepository implements CategoryDAO {
+public class FakeCategoryRepository implements CategoryDAO {
 
     private List<Category> categories = new ArrayList<>( List.of(new Category(1, "Game"),
                                         new Category(2, "Kitchen"),
@@ -26,7 +26,7 @@ public class FakeRepository implements CategoryDAO {
     }
 
     public Category save(Category category){
-        Category found = findById(category.getId()).get();
+        Category found = findById(category.getId()).orElse(null);
 
         if (found != null){
             int index = categories.indexOf(found);

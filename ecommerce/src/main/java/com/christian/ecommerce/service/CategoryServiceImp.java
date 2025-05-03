@@ -9,12 +9,12 @@ import com.christian.ecommerce.model.Category;
 import java.util.List;
 import java.util.Optional;
 
-public class CategoryServiceImp implements ICategoryService{
+public class CategoryServiceImp implements ICategoryService {
 
     private CategoryDAO repository;
     private CategoryMapper mapper;
 
-    public CategoryServiceImp(CategoryDAO repository, CategoryMapper mapper){
+    public CategoryServiceImp(CategoryDAO repository, CategoryMapper mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
@@ -22,30 +22,38 @@ public class CategoryServiceImp implements ICategoryService{
     @Override
     public CategoryDTO createNew(CategoryDTO newCategoryDTO) {
 
-        if (newCategoryDTO != null){
-            Category category = mapper.dtoToCategory(newCategoryDTO);
-
-            return mapper.categoryToDto(repository.save(category));
+        if (newCategoryDTO == null) {
+            throw new CategoryException("[ERROR]: Could not create category(null)");
         }
 
-        throw new CategoryException("[ERROR]: Could not create category(null)");
+        Optional<Category> category1 = repository.findAllByOrderByNameAsc().stream()
+                .filter(category -> category.getName().equals(newCategoryDTO.getName()))
+                .findFirst();
+
+        if (category1.isPresent()) {
+            throw new CategoryException("[ERROR]: This category already exists");
+        }
+
+        Category category = mapper.dtoToCategory(newCategoryDTO);
+
+        return mapper.categoryToDto(repository.save(category));
     }
 
     @Override
     public CategoryDTO update(CategoryDTO categoryDTO) {
 
-        if (categoryDTO != null){
-            Category category = mapper.dtoToCategory(categoryDTO);
-
-           Category byId = repository.findById(categoryDTO.getId())
-                    .orElseThrow(() -> new CategoryException("[ERROR]: Category not found"));
-
-           byId.setName(categoryDTO.getName());
-
-           return mapper.categoryToDto(repository.save(byId));
+        if (categoryDTO == null) {
+            throw new CategoryException("[ERROR]: Could not update null category(null)");
         }
 
-        throw new CategoryException("[ERROR]: Could not update null category(null)");
+        Category category = mapper.dtoToCategory(categoryDTO);
+
+        Category byId = repository.findById(categoryDTO.getId())
+                .orElseThrow(() -> new CategoryException("[ERROR]: Category not found"));
+
+        byId.setName(categoryDTO.getName());
+
+        return mapper.categoryToDto(repository.save(byId));
     }
 
     @Override
@@ -55,13 +63,13 @@ public class CategoryServiceImp implements ICategoryService{
 
     @Override
     public void deleteCategory(Integer id) {
-        if (id < 0 ){
+        if (id < 0) {
             throw new CategoryException("[ERROR]: ID cannot be less than 0");
         }
 
         Optional<Category> byId = repository.findById(id);
 
-        if (byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new CategoryException("[ERROR]: Category not found");
         }
 
