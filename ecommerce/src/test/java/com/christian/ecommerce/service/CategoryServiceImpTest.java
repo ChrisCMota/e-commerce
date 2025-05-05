@@ -10,6 +10,9 @@ import com.christian.ecommerce.repository.FakeCategoryRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class CategoryServiceImpTest {
 
 
@@ -72,6 +75,46 @@ class CategoryServiceImpTest {
                 .isInstanceOf(CategoryException.class)
                 .hasMessage("[ERROR]: Could not update null category(null)");
     }
+
+    @Test
+    void shouldReturnAllCategories(){
+        List<CategoryDTO> categories = new ArrayList<>( List.of(new CategoryDTO(1, "Game"),
+                new CategoryDTO(2, "Kitchen"),
+                new CategoryDTO(3, "Technology")));
+
+        List<CategoryDTO> result = service.getAll();
+
+        Assertions.assertThat(result).containsAll(categories);
+        Assertions.assertThat(result).isEqualTo(categories);
+        Assertions.assertThat(result).isNotNull();
+    }
+
+    @Test
+    void shouldDeleteCategory(){
+        CategoryDTO categoryDeleted = new CategoryDTO(1, "Game");
+        List<CategoryDTO> categories = service.getAll();
+        System.out.println(categories);
+        service.deleteCategory(1);
+
+        List<CategoryDTO> result = service.getAll();
+
+        Assertions.assertThat(result).doesNotContain(categories.get(0));
+    }
+
+    @Test
+    void shouldThrowCategoryExceptionWhenIdLessThenZero(){
+        Assertions.assertThatThrownBy(() -> service.deleteCategory(-1))
+                .isInstanceOf(CategoryException.class)
+                .hasMessage("[ERROR]: ID cannot be less than 0");
+    }
+
+    @Test
+    void shouldThrowCategoryExceptionWhenCategoryNotFound(){
+        Assertions.assertThatThrownBy(() -> service.deleteCategory(99))
+                .isInstanceOf(CategoryException.class)
+                .hasMessage("[ERROR]: Category not found");
+    }
+
 
 
 

@@ -43,7 +43,7 @@ public class FakeCategoryRepository implements CategoryDAO {
         Category byId = findById(id).get();
 
         if (byId != null){
-            categories.remove(id);
+            categories.remove(byId);
         }
     }
 
