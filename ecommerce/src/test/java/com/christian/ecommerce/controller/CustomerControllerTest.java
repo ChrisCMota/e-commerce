@@ -3,14 +3,16 @@ package com.christian.ecommerce.controller;
 import com.christian.ecommerce.dao.CustomerDAO;
 import com.christian.ecommerce.dto.CustomerDTO;
 import com.christian.ecommerce.mapper.CustomerMapper;
+import com.christian.ecommerce.mapper.CustomerMapperImpl;
 import com.christian.ecommerce.model.Customer;
+import com.christian.ecommerce.service.CustomerServiceImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,7 +27,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 
 @WebMvcTest(controllers = CustomerController.class)
-@ComponentScan(basePackages = {"com.christian"})
+@Import({ObjectMapper.class, CustomerMapperImpl.class, CustomerServiceImp.class})
 class CustomerControllerTest {
 
     @Autowired

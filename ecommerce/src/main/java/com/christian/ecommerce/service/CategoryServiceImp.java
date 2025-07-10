@@ -5,10 +5,12 @@ import com.christian.ecommerce.dto.CategoryDTO;
 import com.christian.ecommerce.exceptions.CategoryException;
 import com.christian.ecommerce.mapper.CategoryMapper;
 import com.christian.ecommerce.model.Category;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CategoryServiceImp implements ICategoryService {
 
     private CategoryDAO repository;
