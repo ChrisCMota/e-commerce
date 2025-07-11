@@ -9,7 +9,7 @@ create table products(
     id_product int not null auto_increment primary key,
     name_product varchar(50) not null,
     description_product text,
-    price_product double,
+    price_product decimal(10,2),
     featured int,
     available int
 );
