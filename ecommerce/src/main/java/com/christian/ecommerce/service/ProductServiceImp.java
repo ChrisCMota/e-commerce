@@ -8,9 +8,11 @@ import com.christian.ecommerce.mapper.CategoryMapper;
 import com.christian.ecommerce.mapper.ProductMapper;
 import com.christian.ecommerce.model.Category;
 import com.christian.ecommerce.model.Product;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ProductServiceImp implements IProductService{
 
     private ProductDAO productDAO;

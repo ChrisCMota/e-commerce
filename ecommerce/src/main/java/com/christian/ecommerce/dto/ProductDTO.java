@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,6 +13,8 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @ToString
 public class ProductDTO {
+
+    private Integer id;
 
     @NotBlank
     private String name;
@@ -24,4 +27,6 @@ public class ProductDTO {
     private Integer featured;
 
     private Integer available;
+
+    private List<CategoryDTO> categories;
 }

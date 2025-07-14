@@ -11,10 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode
+@AllArgsConstructor
 @ToString
+@Builder
 public class Product {
 
     @Id
