@@ -1,6 +1,5 @@
 package com.christian.ecommerce.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -18,14 +17,11 @@ public class ProductDTO {
     private Integer id;
 
     @NotBlank
-    @JsonProperty("name_product")
     private String name;
 
-    @JsonProperty("description_product")
     private String description;
 
     @NotBlank
-    @JsonProperty("price_product")
     private BigDecimal price;
 
     private Integer featured;

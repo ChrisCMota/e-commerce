@@ -43,6 +43,9 @@ public class Product {
                inverseJoinColumns = @JoinColumn(name = "id_category"))
     private List<Category> categories;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<VariantProduct> variantProducts;
+
 }
 
 
