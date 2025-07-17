@@ -3,6 +3,7 @@ package com.christian.ecommerce.service;
 import com.christian.ecommerce.dao.VariantProductDAO;
 import com.christian.ecommerce.dto.ProductDTO;
 import com.christian.ecommerce.dto.VariantProductDTO;
+import com.christian.ecommerce.exceptions.VariantProductException;
 import com.christian.ecommerce.mapper.ProductMapper;
 import com.christian.ecommerce.mapper.VariantProductMapper;
 import com.christian.ecommerce.model.Product;
@@ -30,7 +31,11 @@ public class VariantProductService implements IVariantProductService {
 
         VariantProductDTO variantProductDTOSaved = mapperVariant.variantToVariantDto(repository.save(variantProduct));
 
-        return variantProductDTOSaved;
+        if (variantProductDTOSaved != null) {
+            return variantProductDTOSaved;
+        }
+
+        throw new VariantProductException("[ERROR]: could not add new variant product");
     }
 
     @Override
@@ -39,7 +44,11 @@ public class VariantProductService implements IVariantProductService {
 
         VariantProductDTO variantProductDTOSaved = mapperVariant.variantToVariantDto(repository.save(variantProduct));
 
-        return variantProductDTOSaved;
+        if (variantProductDTOSaved != null) {
+            return variantProductDTOSaved;
+        }
+
+        throw new VariantProductException("[ERROR]: could not update variant product");
     }
 
     @Override
@@ -48,14 +57,22 @@ public class VariantProductService implements IVariantProductService {
 
         List<VariantProductDTO> foundByProduct = mapperVariant.variantListToVariantDtoList(repository.findByProduct(product));
 
-        return foundByProduct;
+        if (foundByProduct != null) {
+            return foundByProduct;
+        }
+
+        throw new VariantProductException("[ERROR]: could get variant by product");
     }
 
     @Override
     public VariantProductDTO getById(Integer id) {
         VariantProductDTO variantProduct = mapperVariant.variantToVariantDto(repository.findById(id).orElse(null));
 
-        return variantProduct;
+        if (variantProduct != null) {
+            return variantProduct;
+        }
+
+        throw new VariantProductException("[ERROR]: could not get variant by id");
     }
 }
 
