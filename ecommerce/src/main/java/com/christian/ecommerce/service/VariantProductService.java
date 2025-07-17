@@ -7,9 +7,11 @@ import com.christian.ecommerce.mapper.ProductMapper;
 import com.christian.ecommerce.mapper.VariantProductMapper;
 import com.christian.ecommerce.model.Product;
 import com.christian.ecommerce.model.VariantProduct;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class VariantProductService implements IVariantProductService {
 
     private VariantProductDAO repository;

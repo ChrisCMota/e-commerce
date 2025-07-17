@@ -1,5 +1,6 @@
 package com.christian.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +30,6 @@ public class VariantProduct {
 
     @ManyToOne
     @JoinColumn(name = "id_product")
+    @JsonIgnoreProperties("variantProducts")
     private Product product;
 }
