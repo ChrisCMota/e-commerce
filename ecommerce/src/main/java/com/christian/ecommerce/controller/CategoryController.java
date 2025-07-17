@@ -2,6 +2,7 @@ package com.christian.ecommerce.controller;
 
 import com.christian.ecommerce.dto.CategoryDTO;
 import com.christian.ecommerce.service.ICategoryService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping("categories")
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
         log.info("[INFO]: createCategory() requested");
 
         CategoryDTO newCategory = service.createNew(categoryDTO);
@@ -37,7 +38,7 @@ public class CategoryController {
     }
 
     @PutMapping("categories")
-    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO){
+    public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO){
         log.info("[INFO]: updateCategory() requested");
 
         CategoryDTO updatedCategory = service.update(categoryDTO);

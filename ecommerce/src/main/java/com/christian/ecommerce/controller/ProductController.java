@@ -3,6 +3,7 @@ package com.christian.ecommerce.controller;
 import com.christian.ecommerce.dto.CategoryDTO;
 import com.christian.ecommerce.dto.ProductDTO;
 import com.christian.ecommerce.service.IProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class ProductController {
     }
 
     @PostMapping("products")
-    public ResponseEntity<ProductDTO> insertProduct(@RequestBody ProductDTO newProductDTO){
+    public ResponseEntity<ProductDTO> insertProduct(@Valid @RequestBody ProductDTO newProductDTO){
         log.info("INFO: insert product requested '{}'", newProductDTO);
 
         ProductDTO productDTOReturned = productService.createNewProduct(newProductDTO);
@@ -68,7 +69,7 @@ public class ProductController {
     }
 
     @PutMapping("products")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO){
         log.info("INFO: update product request '{}'", productDTO.toString());
 
         ProductDTO productDTOUpdated = productService.updateProduct(productDTO);

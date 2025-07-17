@@ -16,12 +16,12 @@ public class ProductDTO {
 
     private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "name cannot be null or blank")
     private String name;
 
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "price cannot be null or blank")
     private BigDecimal price;
 
     private Integer featured;

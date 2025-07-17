@@ -13,6 +13,6 @@ public class CategoryDTO {
 
     private Integer id;
 
-    @NotBlank
+    @NotBlank(message = "name cannot be null or blank")
     private String name;
 }

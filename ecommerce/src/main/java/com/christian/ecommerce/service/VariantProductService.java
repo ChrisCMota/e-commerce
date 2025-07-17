@@ -27,15 +27,12 @@ public class VariantProductService implements IVariantProductService {
 
     @Override
     public VariantProductDTO addNew(VariantProductDTO variantProductDTO) {
+
         VariantProduct variantProduct = mapperVariant.variantDtoToVariant(variantProductDTO);
 
         VariantProductDTO variantProductDTOSaved = mapperVariant.variantToVariantDto(repository.save(variantProduct));
 
-        if (variantProductDTOSaved != null) {
-            return variantProductDTOSaved;
-        }
-
-        throw new VariantProductException("[ERROR]: could not add new variant product");
+        return variantProductDTOSaved;
     }
 
     @Override

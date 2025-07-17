@@ -3,6 +3,7 @@ package com.christian.ecommerce.controller;
 import com.christian.ecommerce.dto.ProductDTO;
 import com.christian.ecommerce.dto.VariantProductDTO;
 import com.christian.ecommerce.service.IVariantProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class VariantProductController {
     }
 
     @PostMapping("variants")
-    public ResponseEntity<VariantProductDTO> addNewVariant(@RequestBody VariantProductDTO variantProductDTO){
+    public ResponseEntity<VariantProductDTO> addNewVariant(@Valid @RequestBody VariantProductDTO variantProductDTO){
         log.info("[INFO]: add new variant requested");
 
         VariantProductDTO variantProductDTOAdded = service.addNew(variantProductDTO);
@@ -28,7 +29,7 @@ public class VariantProductController {
     }
 
     @PutMapping("variants")
-    public ResponseEntity<VariantProductDTO> updateVariant(@RequestBody VariantProductDTO variantProductDTO){
+    public ResponseEntity<VariantProductDTO> updateVariant(@Valid @RequestBody VariantProductDTO variantProductDTO){
         log.info("[INFO]: update variant requested");
 
         VariantProductDTO variantProductDTOUpdated = service.updateVariant(variantProductDTO);

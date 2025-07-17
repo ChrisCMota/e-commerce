@@ -21,6 +21,5 @@ public class VariantProductDTO {
 
     private String linkPhoto;
 
-    @NotBlank
     private Product product;
 }
