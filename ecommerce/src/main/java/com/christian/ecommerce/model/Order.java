@@ -1,10 +1,12 @@
 package com.christian.ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "customer_order")
@@ -39,4 +41,8 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "id_customer")
     private Customer customer;
+
+    @OneToMany(mappedBy = "order")
+    @JsonIgnoreProperties("order")
+    private List<ItemOrder> items;
 }
