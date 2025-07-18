@@ -25,7 +25,7 @@ public class GlobalErrorServiceHandlerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    // IT WORKS. BUT I DO NOT WANT TO USE SO I CAN SEE THE ERROR
+    // IT WORKS. BUT I DO NOT WANT TO USE SO I CAN SEE THE STACK EXCEPTION
 //    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
 //    public ResponseEntity<ServiceExceptionMessage> handleSQLIntegrityException(SQLIntegrityConstraintViolationException ex){
 //        var error = new ServiceExceptionMessage(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage());

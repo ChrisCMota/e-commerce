@@ -49,7 +49,7 @@ create table customer_order(
     date_order date not null,
     gross_value double not null,
     discount double not null,
-    net_value double not null,
+    total_value double not null,
     status int not null,
     id_customer int,
 
