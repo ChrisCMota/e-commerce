@@ -29,7 +29,7 @@ public class OrderDTO {
 
     private Integer status;
 
-    private Customer customer;
+    private CustomerDTO customer;
 
-    private List<ItemOrder> items;
+    private List<ItemOrderDTO> items;
 }
