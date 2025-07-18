@@ -1,19 +1,10 @@
 package com.christian.ecommerce.dto;
 
-import com.christian.ecommerce.model.Customer;
-import com.christian.ecommerce.model.ItemOrder;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@EqualsAndHashCode
+
 public class OrderDTO {
 
 
