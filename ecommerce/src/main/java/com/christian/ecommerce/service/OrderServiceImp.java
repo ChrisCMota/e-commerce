@@ -54,11 +54,11 @@ public class OrderServiceImp implements IOrderService{
 
     @Override
     public OrderDTO getByNumber(Integer number) {
-        return null;
+        return orderMapper.orderToOrderDto(repository.findById(number).orElse(null));
     }
 
     @Override
     public List<OrderDTO> getByStatus(Integer status) {
-        return List.of();
+        return orderMapper.orderListToOrderDtoList(repository.findAllByStatus(status));
     }
 }
