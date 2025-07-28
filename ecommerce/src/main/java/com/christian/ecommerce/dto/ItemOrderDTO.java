@@ -1,5 +1,6 @@
 package com.christian.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -22,5 +23,6 @@ public class ItemOrderDTO {
 
     private VariantProductDTO variantProduct;
 
+    @JsonIgnoreProperties("items")
     private OrderDTO order;
 }

@@ -12,6 +12,9 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class CustomerDTO {
+
+    private Integer id;
+
     @NotBlank(message = "Invalid name")
     private String name;
 

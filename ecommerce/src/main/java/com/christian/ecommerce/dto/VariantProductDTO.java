@@ -1,6 +1,7 @@
 package com.christian.ecommerce.dto;
 
 import com.christian.ecommerce.model.Product;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -21,5 +22,6 @@ public class VariantProductDTO {
 
     private String linkPhoto;
 
+    @JsonIgnoreProperties("variantProducts")
     private Product product;
 }

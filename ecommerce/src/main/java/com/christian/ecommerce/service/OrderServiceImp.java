@@ -3,6 +3,7 @@ package com.christian.ecommerce.service;
 import com.christian.ecommerce.dao.OrderDAO;
 import com.christian.ecommerce.dto.OrderDTO;
 import com.christian.ecommerce.mapper.OrderMapper;
+import com.christian.ecommerce.model.ItemOrder;
 import com.christian.ecommerce.model.Order;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,18 @@ public class OrderServiceImp implements IOrderService{
 
     @Override
     public OrderDTO addNewOrder(OrderDTO orderDTO) {
-        return null;
+        Order order = orderMapper.orderDtoToOrder(orderDTO);
+
+        order.getCustomer().setId(orderDTO.getCustomer().getId());
+
+        //need to associate each item to the correspondent order
+        for (ItemOrder item: order.getItems()){
+            item.setOrder(order);
+        }
+
+        //could have a discount business logic here
+
+        return orderMapper.orderToOrderDto(repository.save(order));
     }
 
     @Override
