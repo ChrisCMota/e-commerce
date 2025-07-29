@@ -5,6 +5,7 @@ import com.christian.ecommerce.dto.ProductDTO;
 import com.christian.ecommerce.service.IProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +22,10 @@ public class ProductController {
     }
 
     @GetMapping("products")
-    public ResponseEntity<List<ProductDTO>> getAll(){
+    public ResponseEntity<Page<ProductDTO>> getAll(@RequestParam(name = "p") int p){
         log.info("INFO: getAll() Requested");
 
-        List<ProductDTO> productDTOS = productService.findAll();
+        Page<ProductDTO> productDTOS = productService.findAll(p);
 
         return ResponseEntity.ok(productDTOS);
     }

@@ -8,6 +8,9 @@ import com.christian.ecommerce.mapper.CategoryMapper;
 import com.christian.ecommerce.mapper.ProductMapper;
 import com.christian.ecommerce.model.Category;
 import com.christian.ecommerce.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +21,8 @@ public class ProductServiceImp implements IProductService{
     private ProductDAO productDAO;
     private ProductMapper mapper;
     private CategoryMapper categoryMapper;
+
+    private static final int PAGE_SIZE = 5;
 
     public ProductServiceImp(ProductDAO productDAO, ProductMapper mapper, CategoryMapper categoryMapper){
         this.productDAO = productDAO;
@@ -52,11 +57,11 @@ public class ProductServiceImp implements IProductService{
     }
 
     @Override
-    public List<ProductDTO> findAll() {
-        List<ProductDTO> productDTOS = mapper.productListToDTOList(productDAO.findAll());
+    public Page<ProductDTO> findAll(int nPage) {
+        Pageable pageable = PageRequest.of(nPage, PAGE_SIZE);
 
-        if(productDTOS != null){
-            return productDTOS;
+        if (pageable != null) {
+            return mapper.prodPageToDtoProdPage(productDAO.findAll(pageable));
         }
 
         throw new ProductException("[ERROR]: Could not find list of products");
