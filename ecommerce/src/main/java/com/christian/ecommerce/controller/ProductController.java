@@ -23,7 +23,7 @@ public class ProductController {
     }
 
     @GetMapping("products")
-    public ResponseEntity<Page<Product>> getAll(@RequestParam(name = "p") int p){
+    public ResponseEntity<Page<Product>> getAll(@RequestParam(name = "p", defaultValue = "0") int p){
         log.info("INFO: getAll() Requested");
 
         Page<Product> productsPage = productService.findAll(p);
