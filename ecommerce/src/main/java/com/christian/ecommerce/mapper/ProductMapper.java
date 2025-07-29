@@ -4,7 +4,6 @@ import com.christian.ecommerce.dto.ProductDTO;
 import com.christian.ecommerce.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,7 +16,4 @@ public interface ProductMapper {
 
     List<ProductDTO> productListToDTOList(List<Product> products);
 
-    Page<Product> dtoProdPageToProdPage(Page<ProductDTO> productDTOPage);
-
-    Page<ProductDTO> prodPageToDtoProdPage(Page<Product> productPage);
 }

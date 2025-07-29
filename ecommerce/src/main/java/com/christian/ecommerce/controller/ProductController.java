@@ -2,6 +2,7 @@ package com.christian.ecommerce.controller;
 
 import com.christian.ecommerce.dto.CategoryDTO;
 import com.christian.ecommerce.dto.ProductDTO;
+import com.christian.ecommerce.model.Product;
 import com.christian.ecommerce.service.IProductService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,12 @@ public class ProductController {
     }
 
     @GetMapping("products")
-    public ResponseEntity<Page<ProductDTO>> getAll(@RequestParam(name = "p") int p){
+    public ResponseEntity<Page<Product>> getAll(@RequestParam(name = "p") int p){
         log.info("INFO: getAll() Requested");
 
-        Page<ProductDTO> productDTOS = productService.findAll(p);
+        Page<Product> productsPage = productService.findAll(p);
 
-        return ResponseEntity.ok(productDTOS);
+        return ResponseEntity.ok(productsPage);
     }
 
     @GetMapping("products/search")

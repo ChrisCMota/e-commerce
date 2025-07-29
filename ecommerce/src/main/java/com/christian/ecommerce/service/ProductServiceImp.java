@@ -57,11 +57,11 @@ public class ProductServiceImp implements IProductService{
     }
 
     @Override
-    public Page<ProductDTO> findAll(int nPage) {
+    public Page<Product> findAll(int nPage) {
         Pageable pageable = PageRequest.of(nPage, PAGE_SIZE);
 
         if (pageable != null) {
-            return mapper.prodPageToDtoProdPage(productDAO.findAll(pageable));
+            return productDAO.findAll(pageable);
         }
 
         throw new ProductException("[ERROR]: Could not find list of products");
