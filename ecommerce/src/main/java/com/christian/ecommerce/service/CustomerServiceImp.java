@@ -19,6 +19,8 @@ public class CustomerServiceImp implements ICustomerService{
 
     private CustomerMapper mapper;
 
+    private BCryptPasswordEncoder encoderPassword = new BCryptPasswordEncoder();
+
     public CustomerServiceImp(CustomerDAO customerDAO, CustomerMapper mapper) {
         this.customerDAO = customerDAO;
         this.mapper = mapper;
@@ -28,8 +30,6 @@ public class CustomerServiceImp implements ICustomerService{
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO newCustomer) {
         CustomerDTOValidator.validator(newCustomer);
-
-        BCryptPasswordEncoder encoderPassword = new BCryptPasswordEncoder();
 
         String passwordEncoded = encoderPassword.encode(newCustomer.getPassword());
 
@@ -48,8 +48,15 @@ public class CustomerServiceImp implements ICustomerService{
     public CustomerDTO updateCustomer(CustomerDTO customerDTO) {
         Customer byEmail = customerDAO.findByEmail(customerDTO.getEmail());
 
+
         Customer customer = mapper.customerDtotoCustomer(customerDTO);
         customer.setId(byEmail.getId());
+
+        if (customerDTO.getPassword() != null || !customerDTO.getPassword().isBlank()){
+
+            String passwordEncoded = encoderPassword.encode(customerDTO.getPassword());
+            customer.setPassword(passwordEncoded);
+        }
 
         if (byEmail != null){
             Customer saved = customerDAO.save(customer);
