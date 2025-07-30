@@ -10,6 +10,8 @@ public class CustomerDTOValidator {
                 customerDTO.getEmail() == null ||
                 customerDTO.getAddress() == null ||
                 customerDTO.getEircode() == null ||
+                customerDTO.getPassword() == null ||
+                customerDTO.getPassword().isBlank() ||
                 customerDTO.getName().isBlank() ||
                 customerDTO.getEmail().isBlank()||
                 customerDTO.getAddress().isBlank() ||

@@ -37,6 +37,7 @@ create table customers(
     id_customer int not null auto_increment primary key,
     name_customer varchar(50) not null,
     email_customer varchar(100) not null unique,
+    password_costumer varchar(100),
     phone_number varchar(20),
     address_customer varchar(255) not null,
     eircode_customer varchar(10),

@@ -1,5 +1,6 @@
 package com.christian.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,10 @@ public class CustomerDTO {
     @Email(message = "Invalid email")
     @Size(max = 100)
     private String email;
+
+    @NotBlank(message = "Invalid password")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 
     @Size(max = 20)
     private String phoneNumber;

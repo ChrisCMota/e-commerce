@@ -25,6 +25,9 @@ public class Customer {
     @Column(name = "email_customer", nullable = false, unique = true, length = 100)
     private String email;
 
+    @Column(name = "password_costumer", length = 100)
+    private String password;
+
     @Column(name = "phone_number", length = 20)
     private String phoneNumber;
 

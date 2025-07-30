@@ -5,7 +5,9 @@ import com.christian.ecommerce.dto.CustomerDTO;
 import com.christian.ecommerce.exceptions.CustomersException;
 import com.christian.ecommerce.mapper.CustomerMapper;
 import com.christian.ecommerce.model.Customer;
+import com.christian.ecommerce.security.ECToken;
 import com.christian.ecommerce.validators.CustomerDTOValidator;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +29,12 @@ public class CustomerServiceImp implements ICustomerService{
     public CustomerDTO createNewCustomer(CustomerDTO newCustomer) {
         CustomerDTOValidator.validator(newCustomer);
 
+        BCryptPasswordEncoder encoderPassword = new BCryptPasswordEncoder();
+
+        String passwordEncoded = encoderPassword.encode(newCustomer.getPassword());
+
         Customer customer = mapper.customerDtotoCustomer(newCustomer);
+        customer.setPassword(passwordEncoded);
 
         CustomerDTO savedCustomerDTO = mapper.customerToCustomerDto(customerDAO.save(customer));
 
@@ -89,5 +96,10 @@ public class CustomerServiceImp implements ICustomerService{
     @Override
     public CustomerDTO getCustomerByEmail(String email) {
        return mapper.customerToCustomerDto(customerDAO.findByEmail(email));
+    }
+
+    @Override
+    public ECToken doLogin(String email, String password) {
+        return null;
     }
 }
