@@ -1,13 +1,17 @@
 package com.christian.ecommerce.security;
 
 import com.christian.ecommerce.model.Customer;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 
 public class ECTokenUtil {
@@ -36,7 +40,23 @@ public class ECTokenUtil {
         return token;
     }
 
-    public Authentication decodeToken(HttpServletRequest request){
+    public static Authentication decodeToken(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        token = token.replace(TOKEN_HEADER, "");
+
+        Jws<Claims> jwsClaims = Jwts.parser()
+                .setSigningKey(TOKEN_KEY.getBytes())
+                .build()
+                .parseClaimsJws(token);
+
+        String login = jwsClaims.getBody().getSubject();
+        String issuer = jwsClaims.getBody().getIssuer();
+        Date expirationDate = jwsClaims.getBody().getExpiration();
+
+        if (login.length() > 0 && issuer.equals(ISSUER) && expirationDate.after(new Date(System.currentTimeMillis()))){
+            return new UsernamePasswordAuthenticationToken(login, null, Collections.emptyList());
+        }
+
         return null;
     }
 }
