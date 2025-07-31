@@ -6,6 +6,7 @@ import com.christian.ecommerce.exceptions.CustomersException;
 import com.christian.ecommerce.mapper.CustomerMapper;
 import com.christian.ecommerce.model.Customer;
 import com.christian.ecommerce.security.ECToken;
+import com.christian.ecommerce.security.ECTokenUtil;
 import com.christian.ecommerce.validators.CustomerDTOValidator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -107,6 +108,16 @@ public class CustomerServiceImp implements ICustomerService{
 
     @Override
     public ECToken doLogin(String email, String password) {
+        Customer customer = customerDAO.findByEmail(email);
+
+        if (customer != null){
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+            if (encoder.matches(password, customer.getPassword())){
+                return ECTokenUtil.generateToken(customer);
+            }
+        }
+
         return null;
     }
 }

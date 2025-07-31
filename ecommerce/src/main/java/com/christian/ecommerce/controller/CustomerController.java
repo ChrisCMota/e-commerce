@@ -1,6 +1,8 @@
 package com.christian.ecommerce.controller;
 
 import com.christian.ecommerce.dto.CustomerDTO;
+import com.christian.ecommerce.model.Customer;
+import com.christian.ecommerce.security.ECToken;
 import com.christian.ecommerce.service.ICustomerService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -62,5 +64,16 @@ public class CustomerController {
             CustomerDTO customerByEmail = customerService.getCustomerByEmail(customer.getEmail());
 
             return ResponseEntity.ok(customerService.updateCustomer(customer));
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<ECToken> login(@RequestBody Customer customer){
+        ECToken token = customerService.doLogin(customer.getEmail(), customer.getPassword());
+
+        if (token != null){
+            return ResponseEntity.ok(token);
+        }
+
+        return ResponseEntity.status(403).build();
     }
 }

@@ -20,6 +20,7 @@ public class MySecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/products").permitAll() // Allows GET requests to /products without authentication
                         .requestMatchers(HttpMethod.POST, "/customers").permitAll() // Allows POST requests to /customers without authentication
                         .requestMatchers(HttpMethod.GET, "/customers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .anyRequest().authenticated() // Requires authentication for all other requests
                 )
                 .cors(Customizer.withDefaults()) // Enables CORS with default settings (can customize it if needed using: cors -> {} )
