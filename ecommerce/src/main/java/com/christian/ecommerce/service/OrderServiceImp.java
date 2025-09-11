@@ -1,6 +1,7 @@
 package com.christian.ecommerce.service;
 
 import com.christian.ecommerce.dao.OrderDAO;
+import com.christian.ecommerce.dto.MonthlyRevenue;
 import com.christian.ecommerce.dto.OrderDTO;
 import com.christian.ecommerce.mapper.OrderMapper;
 import com.christian.ecommerce.model.ItemOrder;
@@ -60,5 +61,10 @@ public class OrderServiceImp implements IOrderService{
     @Override
     public List<OrderDTO> getByStatus(Integer status) {
         return orderMapper.orderListToOrderDtoList(repository.findAllByStatus(status));
+    }
+
+    @Override
+    public List<MonthlyRevenue> getRevenue(Integer year) {
+        return repository.getRevenue(year);
     }
 }

@@ -1,5 +1,6 @@
 package com.christian.ecommerce.controller;
 
+import com.christian.ecommerce.dto.MonthlyRevenue;
 import com.christian.ecommerce.dto.OrderDTO;
 import com.christian.ecommerce.service.IOrderService;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,11 @@ public class OrderController {
         OrderDTO orderByNumber = orderService.getByNumber(id);
 
         return ResponseEntity.ok(orderByNumber);
+    }
+
+    @GetMapping("order/revenue/{year}")
+    public ResponseEntity<List<MonthlyRevenue>> getRevenue(@PathVariable Integer year){
+        return ResponseEntity.ok(orderService.getRevenue(year));
     }
 
 
